@@ -23,7 +23,7 @@ import { useSession } from "next-auth/react";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import UploadFile from "../forms/UploadFile";
 import UploadFolder from "../forms/UploadFolder";
-import {LoadingDialog} from "./LoadingDialog";
+import { LoadingDialog } from "./LoadingDialog";
 
 function Sidebar() {
   const router = useRouter();
@@ -34,8 +34,8 @@ function Sidebar() {
   const [isExpanded, setIsExpanded] = useState(false);
   const [uploadOpen, setUploadOpen] = useState(false);
   const [folderOpen, setFolderOpen] = useState(false);
-  const [loadingOpen, setLoadingOpen] = useState(false)
-
+  const [loadingOpen, setLoadingOpen] = useState(false);
+  const classes = ['address proof', 'bank-statements', 'business proof', 'employment proof', 'fund raising', 'identity proof', 'invoices', 'personal finance statement', 'power of attorney', 'receipts', 'salary slip', 'tax return', '']
   const addImageToFile = (e: any) => {
     const reader = new FileReader();
     if (e.target.files[0]) {
@@ -46,10 +46,10 @@ function Sidebar() {
       setImageToPost(readerEvent.target?.result);
     };
   };
-  
+
   const uploadSomething = async (name: string) => {
     // console.log("object"); working till here
-    setLoadingOpen(true)
+    setLoadingOpen(true);
     if (imageToPost) {
       const path = router.pathname;
       if (path === "/drive/home") {
@@ -63,16 +63,20 @@ function Sidebar() {
           uploadString(storageRef, imageToPost, "data_url").then(() => {
             getDownloadURL(
               ref(storage, `media/${user?.data?.user?.email}/${name}`)
-              ).then((url) => {
+            ).then((url) => {
+              //get the class of the file
               setDoc(
                 doc(db, `/users/${user?.data?.user?.email}/files`, id.id),
                 {
                   url,
+                  class: "aadhar",
                 },
                 {
                   merge: true,
                 }
-              ).finally(()=>{setLoadingOpen(false)});
+              ).finally(() => {
+                setLoadingOpen(false);
+              });
             });
           });
         });
@@ -86,7 +90,7 @@ function Sidebar() {
           const storageRef = ref(
             storage,
             `media/${user?.data?.user?.email}/${name}`
-            );
+          );
           uploadString(storageRef, imageToPost, "data_url").then(() => {
             getDownloadURL(
               ref(storage, `media/${user?.data?.user?.email}/${name}`)
@@ -99,7 +103,7 @@ function Sidebar() {
                 {
                   merge: true,
                 }
-                ).finally(()=> setLoadingOpen(false));
+              ).finally(() => setLoadingOpen(false));
             });
           });
         });
@@ -114,7 +118,7 @@ function Sidebar() {
     width > 1000 ? setIsExpanded(true) : setIsExpanded(false);
   }, []);
   const addFolder = (n: any) => {
-    setLoadingOpen(true)
+    setLoadingOpen(true);
     const path = router.pathname;
     if (path === "/drive/home") {
       addDoc(collection(db, "folders"), {
@@ -134,7 +138,9 @@ function Sidebar() {
           {
             merge: true,
           }
-        ).finally(()=>{setLoadingOpen(false)});
+        ).finally(() => {
+          setLoadingOpen(false);
+        });
       });
     } else {
       while (!router.isReady) {
@@ -158,7 +164,9 @@ function Sidebar() {
           {
             merge: true,
           }
-        ).finally(()=>{setLoadingOpen(false)});
+        ).finally(() => {
+          setLoadingOpen(false);
+        });
       });
     }
     setFolderOpen(false);
@@ -195,8 +203,17 @@ function Sidebar() {
         boxShadow: "4px 0 2px -1px #888",
       }}
     >
-      <UploadFile uploadSomething={uploadSomething} addImageToFile={addImageToFile} open={uploadOpen} close={()=>setUploadOpen(false)}/>
-      <UploadFolder addFolder={addFolder} open={folderOpen} close={()=>setFolderOpen(false)} />
+      <UploadFile
+        uploadSomething={uploadSomething}
+        addImageToFile={addImageToFile}
+        open={uploadOpen}
+        close={() => setUploadOpen(false)}
+      />
+      <UploadFolder
+        addFolder={addFolder}
+        open={folderOpen}
+        close={() => setFolderOpen(false)}
+      />
       <input type="file" hidden ref={uploadRef} onChange={addImageToFile} />
       <Button
         fullWidth
@@ -220,7 +237,8 @@ function Sidebar() {
         }}
       >
         <ButtOn onClick={addFile}>Upload Files</ButtOn>
-        <ButtOn onClick={()=>setFolderOpen(true)}>Create Folder</ButtOn> <br />
+        <ButtOn onClick={() => setFolderOpen(true)}>Create Folder</ButtOn>{" "}
+        <br />
         <br />
         <div>
           <ListAlt sx={{ height: "40px", width: "40px" }} />{" "}
@@ -265,7 +283,7 @@ function Sidebar() {
           </Link>
         </div>
       </Stack>
-      <LoadingDialog open={loadingOpen} onClose={()=> {}} />
+      <LoadingDialog open={loadingOpen} onClose={() => {}} />
     </div>
   );
 }
