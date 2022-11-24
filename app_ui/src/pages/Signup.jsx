@@ -2,14 +2,16 @@ import React from 'react'
 import { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom"
 import FirebaseContext from "../context/firebase";
+import { FcGoogle } from 'react-icons/fc'
+import { AiFillFacebook } from 'react-icons/ai'
 import { toast } from 'react-toastify';
-
 import loginImg from '../assets/loginBanner.svg'
 
-export default function Login() {
+export default function SignUp() {
     const history = useNavigate();
     const { firebase } = useContext(FirebaseContext)
 
+    const [fullName, setFullName] = useState('')
     const [emailAddress, setEmailAddress] = useState('');
     const [password, setPassword] = useState('');
 
@@ -17,26 +19,61 @@ export default function Login() {
 
     const isInvalid = password == '' || emailAddress == '';
 
-    const handleLogin = async (event) => {
+    const handleSignUp = async (event) => {
         event.preventDefault();
 
         try {
-            await firebase.auth().signInWithEmailAndPassword(emailAddress, password);
-            history('/');
+            const createdUserResult = await firebase
+                .auth()
+                .createUserWithEmailAndPassword(emailAddress, password)
+
+            // authentication
+            // -> we are sending emailaddress and password and username (displayname)
+
+            // console.log(createdUserResult, createdUserResult.user)
+
+            // firebase user collection (create a document)
+
+            await firebase.firestore().collection('users').add({
+                userId: createdUserResult.user.uid,
+                fullName,
+                emailAddress: emailAddress.toLowerCase(),
+                following: [],
+                followers: [],
+                dateCreated: Date.now()
+            })
+
             toast.success("congo")
-        } catch (error) {
+            // history(ROUTES.DASHBOARD);
+            // firebase.auth().onAuthStateChanged(function(user) {
+            //     if (user) {
+            //       user.updateProfile({
+            //           displayName: username
+            //       })
+            //     } else {
+            //       // No user is signed in.
+            //     }
+            //   });
+
+        }
+
+        catch (error) {
             setEmailAddress('');
+            setFullName('');
             setPassword('');
             setError(error.message);
         }
+
+
+        // console.log('error ', error );
     };
 
     useEffect(() => {
-        document.title = 'Log In';
+        document.title = 'Sign Up';
         const userExists = localStorage.getItem('authUser');
         if (userExists) {
-            // history(ROUTES.DASHBOARD)
-        }
+            // history(ROUTES.DASHBOARD);
+        };
     }, []);
 
     return (
@@ -46,12 +83,14 @@ export default function Login() {
 
             <div className='flex justify-center items-center h-full'>
 
-                <form className='max-w-[400px] w-full mx-auto bg-white p-8' onSubmit={handleLogin} method="POST">
+                <form className='max-w-[400px] w-full mx-auto bg-white p-8' onSubmit={handleSignUp} method="POST">
                     <h2 className='text-4xl font-bold text-center py-4'>FAST VIBE.</h2>
-                    {/* <div className='flex justify-between py-8'>
-                        <p className='border shadow-lg hover:shadow-xl px-6 py-2 relative flex items-center'><AiFillFacebook className='mr-2' /> Facebook</p>
-                        <p className='border shadow-lg hover:shadow-xl px-6 py-2 relative flex items-center'><FcGoogle className='mr-2' /> Google</p>
-                    </div> */}
+                    <div className='flex flex-col mb-4'>
+                        <label>FullName</label>
+                        <input className='border relative bg-gray-100 p-2' type="text"
+                            onChange={({ target }) => setFullName(target.value)}
+                        />
+                    </div>
                     <div className='flex flex-col mb-4'>
                         <label>Email</label>
                         <input className='border relative bg-gray-100 p-2' type="text"
@@ -69,12 +108,11 @@ export default function Login() {
                         type="submit"
                         className={` 
                             w-full py-3 mt-8 bg-indigo-600 hover:bg-indigo-500 relative text-white
-                            ${isInvalid && `opacity-50`}     
+                    ${isInvalid && `opacity-50`}     
                         `}>
-                        Log In
+                        Sign Up
                     </button>
-                    <p className='flex items-center mt-2'><input className='mr-2' type="checkbox" />Remember Me</p>
-                    <p className='text-center mt-8'>Not a member? <Link to="/signup"> Sign up now </Link> </p>
+                    <p className='text-center mt-8'>Already a member? <Link to="/login" className="cursor-pointer">Login now</Link> </p>
                 </form>
             </div>
         </div>
