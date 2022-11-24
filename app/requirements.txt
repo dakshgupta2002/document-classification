@@ -1,0 +1,6 @@
+fastapi
+pydantic
+
+pytesseract
+Pillow
+pypdfium2
