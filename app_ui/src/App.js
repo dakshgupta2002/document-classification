@@ -9,6 +9,8 @@ import { useState, useContext, useEffect } from "react";
 import FirebaseContext from "./context/firebase";
 import SignUp from './pages/Signup';
 import Dashboard from './pages/Dashboard';
+import Preview from './pages/Preview';
+import Header from './components/header';
 
 function App() {
 
@@ -24,6 +26,7 @@ function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/docs/:docId" element={<Preview />} />
         </Routes>
       </Router>
     </UserContext.Provider>
