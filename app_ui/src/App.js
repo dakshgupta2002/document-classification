@@ -8,12 +8,12 @@ import UserContext from './context/user';
 import { useState, useContext, useEffect } from "react";
 import FirebaseContext from "./context/firebase";
 import SignUp from './pages/Signup';
+import Dashboard from './pages/Dashboard';
 
 function App() {
 
   const { firebase } = useContext(FirebaseContext)
 
-  console.log(firebase)
   const user = useAuthListener();
 
   return (
@@ -21,6 +21,7 @@ function App() {
       <Router>
         <ToastContainer />
         <Routes>
+          <Route path="/" element={<Dashboard />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
         </Routes>

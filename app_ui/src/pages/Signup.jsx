@@ -30,6 +30,9 @@ export default function SignUp() {
             // authentication
             // -> we are sending emailaddress and password and username (displayname)
 
+            await createdUserResult.user.updateProfile({
+                displayName: fullName,
+            });
             // console.log(createdUserResult, createdUserResult.user)
 
             // firebase user collection (create a document)
@@ -44,7 +47,7 @@ export default function SignUp() {
             })
 
             toast.success("congo")
-            // history(ROUTES.DASHBOARD);
+            history("/");
             // firebase.auth().onAuthStateChanged(function(user) {
             //     if (user) {
             //       user.updateProfile({
@@ -62,6 +65,17 @@ export default function SignUp() {
             setFullName('');
             setPassword('');
             setError(error.message);
+            switch (error.code) {
+                case 'auth/weak-password':
+                    toast.info("The password must have atleast 6 characters")
+                    return;
+                case 'auth/email-already-in-use':
+                    toast.error("This email is already registered.")
+                    return;
+                default:
+                    toast.error("Some error occured in auth, try again!")
+                    return;
+            }
         }
 
 
@@ -72,7 +86,7 @@ export default function SignUp() {
         document.title = 'Sign Up';
         const userExists = localStorage.getItem('authUser');
         if (userExists) {
-            // history(ROUTES.DASHBOARD);
+            history("/");
         };
     }, []);
 
@@ -107,7 +121,7 @@ export default function SignUp() {
                         disabled={isInvalid}
                         type="submit"
                         className={` 
-                            w-full py-3 mt-8 bg-indigo-600 hover:bg-indigo-500 relative text-white
+                            w-full py-3 mt-8 bg-blue-500 hover:bg-indigo-500 relative text-white
                     ${isInvalid && `opacity-50`}     
                         `}>
                         Sign Up

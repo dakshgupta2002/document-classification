@@ -35,7 +35,7 @@ export default function Login() {
         document.title = 'Log In';
         const userExists = localStorage.getItem('authUser');
         if (userExists) {
-            // history(ROUTES.DASHBOARD)
+            history("/")
         }
     }, []);
 
@@ -68,7 +68,7 @@ export default function Login() {
                         disabled={isInvalid}
                         type="submit"
                         className={` 
-                            w-full py-3 mt-8 bg-indigo-600 hover:bg-indigo-500 relative text-white
+                            w-full py-3 mt-8 bg-blue-500 hover:bg-indigo-500 relative text-white
                             ${isInvalid && `opacity-50`}     
                         `}>
                         Log In
