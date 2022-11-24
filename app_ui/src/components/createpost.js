@@ -1,17 +1,16 @@
-import { useRef, useState, useContext } from "react";
+import { useRef, useState, useContext, useEffect } from "react";
 import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
 import { storage } from "../lib/firebase";
 import FirebaseContext from "../context/firebase";
 import { toast } from "react-toastify";
 
 export default function CreatePost({ createP, setCreateP, userId }) {
-    const [caption, setCaption] = useState('');
+    const [caption, setCaption] = useState(null);
 
     const imageInput = useRef(null);
     const [document, setDocument] = useState(null);
     const [docId, setDocId] = useState(null);
     const { firebase } = useContext(FirebaseContext)
-
 
 
     const getImage = () => {
@@ -39,14 +38,15 @@ export default function CreatePost({ createP, setCreateP, userId }) {
                     .firestore()
                     .collection('docs')
                     .add({
-                        caption: caption,
+                        caption: caption + '.' + document.name.substring(document.name.lastIndexOf('.') + 1).toLowerCase(),
                         dateCreated: Date.now(),
                         docSrc: url,
-                        likes: [],
                         docId: docId,
                         userId: userId,
+                        class: "not classified"
                     });
                 setCreateP((createP) => !createP)
+                window.location.reload()
             })
     }
 

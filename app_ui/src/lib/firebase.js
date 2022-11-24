@@ -3,10 +3,6 @@ import 'firebase/compat/firestore';
 import 'firebase/compat/auth';
 import { getStorage } from 'firebase/storage';
 
-// import seed file
-// import { seedDatabase } from '../seed';
-
-// console.log(process.env.REACT_APP_apiKey)
 const config = {
     apiKey: "AIzaSyDdHlZPtTLBx8Xfyh3lG47uFeZpfov7raU",
     authDomain: "fast-vibe.firebaseapp.com",
@@ -20,8 +16,5 @@ const config = {
 const firebase = Firebase.initializeApp(config);
 const { FieldValue } = Firebase.firestore;
 const storage = getStorage(firebase)
-
-// call seed file once
-// seedDatabase(firebase);
 
 export { firebase, FieldValue, storage };
