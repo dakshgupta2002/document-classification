@@ -4,5 +4,3 @@ pydantic
 pytesseract
 Pillow
 pypdfium2
-
-pickle
