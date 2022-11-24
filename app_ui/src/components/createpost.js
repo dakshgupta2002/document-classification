@@ -3,6 +3,7 @@ import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
 import { storage } from "../lib/firebase";
 import FirebaseContext from "../context/firebase";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 export default function CreatePost({ createP, setCreateP, userId }) {
     const [caption, setCaption] = useState(null);
@@ -11,23 +12,38 @@ export default function CreatePost({ createP, setCreateP, userId }) {
     const [document, setDocument] = useState(null);
     const [docId, setDocId] = useState(null);
     const { firebase } = useContext(FirebaseContext)
+    // console.log(document)
 
 
-    const getImage = () => {
+    const getImage = async () => {
         imageInput.current.click();
         setDocId(`${userId}` + Math.floor(Math.random() * (Number.MAX_SAFE_INTEGER - 1)));
     }
 
-    const handlePost = () => {
+    const toBase64 = file => new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result.split(',').pop());
+        reader.onerror = error => reject(error);
+    });
+
+
+    const handlePost = async () => {
         if (document == null || docId == null || caption == null) {
             toast.error("Please select a document/ caption!");
             return;
         };
-        const imageRef = ref(storage, `${userId}/${docId}`)
-        uploadBytes(imageRef, document).then(() => {
-            uploadToFirestore();
-            toast.success('Document uploaded');
-        })
+        // const imageRef = ref(storage, `${userId}/${docId}`)
+        // uploadBytes(imageRef, document).then(() => {
+        //     uploadToFirestore();
+        //     toast.success('Document uploaded');
+        // })
+
+        const b64 = await toBase64(document)
+        await axios.post("http://localhost:8000/extract/pdf", { filename: document.name, b64: b64 }).then(
+            res => console.log('res', res)
+        )
+        // console.log(res)
     }
 
     const uploadToFirestore = () => {
