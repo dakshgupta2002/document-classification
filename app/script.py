@@ -5,6 +5,9 @@ from pathlib import Path
 import pypdfium2 as pdfium
 import base64
 import pypdfium2 as pdfium
+import pickle 
+
+pickled_model = pickle.load(open('model.pkl', 'rb'))
 
 path_to_tesseract = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 pytesseract.tesseract_cmd = path_to_tesseract
@@ -47,3 +50,13 @@ def extract_from_pdf(b64, filename):
         print(error)
         
     return text
+
+def classify_image(b64, filename):
+    text = extract_from_image(b64, filename)
+    res = pickled_model.predict([text])
+    return res[0]
+    
+def classify_pdf(b64, filename):
+    text = extract_from_pdf(b64, filename)
+    res = pickled_model.predict([text])
+    return res[0]    
