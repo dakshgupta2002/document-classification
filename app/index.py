@@ -26,10 +26,10 @@ def index():
     }
 
 @app.post("/extract/image")
-async def create_item(image: Image):
-    return extract_from_image(image.b64, image.filename)
+async def index(image: Image):
+    return {"text": extract_from_image(image.b64, image.filename)}
      
 @app.post("/extract/pdf")
-async def create_item(pdf: Pdf):
-    return extract_from_pdf(image.b64, pdf.filename)
+async def index(pdf: Pdf):
+    return {"text": extract_from_pdf(pdf.b64, pdf.filename)}
      

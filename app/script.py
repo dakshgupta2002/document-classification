@@ -27,20 +27,21 @@ def extract_from_image(b64, filename):
     return text
 
 def extract_from_pdf(b64, filename):
+    print("pdf extract")
     res = base64.b64decode(b64)
     text=""
     
     try:
-        result = open('res.jpg', 'wb')
+        result = open('res.pdf', 'wb')
         result.write(res)
         result.close()
         
-        pdf = pdfium.PdfDocument('res.jpg')
+        pdf = pdfium.PdfDocument('res.pdf')
         for page_number in range(len(pdf)):
             page = pdf.get_page(page_number)
-            pil_image = page.render_topil(scale=1, rotation=0, crop=(0, 0, 0, 0), greyscale=False, optimise_mode=pdfium.OptimiseMode.NONE,)
-            pil_image.save("image.png")
-            img = Image.open("image.png")
+            pil_image = page.render_topil(scale=1, rotation=0, crop=(0, 0, 0, 0), greyscale=False, optimise_mode=pdfium.OptimiseMode.NONE)
+            pil_image.save("res.jpg")
+            img = Image.open("res.jpg")
             text += pytesseract.image_to_string(img)
     except:
         print(error)
