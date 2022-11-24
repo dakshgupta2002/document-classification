@@ -31,7 +31,7 @@ export default function SignUp() {
             // -> we are sending emailaddress and password and username (displayname)
 
             await createdUserResult.user.updateProfile({
-                displayName: fullName,
+                displayName: fullName
             });
             // console.log(createdUserResult, createdUserResult.user)
 
@@ -41,9 +41,8 @@ export default function SignUp() {
                 userId: createdUserResult.user.uid,
                 fullName,
                 emailAddress: emailAddress.toLowerCase(),
-                following: [],
-                followers: [],
-                dateCreated: Date.now()
+                dateCreated: Date.now(),
+                admin: false
             })
 
             toast.success("congo")

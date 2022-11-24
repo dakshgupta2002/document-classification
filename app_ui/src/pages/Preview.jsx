@@ -18,6 +18,7 @@ export default function Preview() {
             const res = await getDocumentByDocId(docId);
             // console.log(res);
             setDocumentInfo(res);
+            console.log(res)
         }
         if (user) {
             getDocument();

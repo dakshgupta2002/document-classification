@@ -4,13 +4,13 @@ import 'firebase/compat/auth';
 import { getStorage } from 'firebase/storage';
 
 const config = {
-    apiKey: "AIzaSyDdHlZPtTLBx8Xfyh3lG47uFeZpfov7raU",
-    authDomain: "fast-vibe.firebaseapp.com",
-    projectId: "fast-vibe",
-    storageBucket: "fast-vibe.appspot.com",
-    messagingSenderId: "445259309915",
-    appId: "1:445259309915:web:0cd4c7524a1ad52246b07e",
-    measurementId: "G-XMVRRK4FY1"
+    apiKey: "AIzaSyDZYcmjaefNZEibhWTvYi5IZQwWb_a5p5E",
+    authDomain: "fast-vibe-2.firebaseapp.com",
+    projectId: "fast-vibe-2",
+    storageBucket: "fast-vibe-2.appspot.com",
+    messagingSenderId: "356062221346",
+    appId: "1:356062221346:web:2d4fec10d0d318c438667b",
+    measurementId: "G-TCKMBZ7974"
 };
 
 const firebase = Firebase.initializeApp(config);

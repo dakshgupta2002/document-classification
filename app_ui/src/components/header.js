@@ -59,11 +59,9 @@ export default function Header() {
                                         </svg>
                                     </button>
 
-                                    <Link to={`/p/${user.displayName}`}>
-                                        <div>
-                                            Hey, {user.displayName}
-                                        </div>
-                                    </Link>
+                                    <div>
+                                        Hey, {user.displayName}
+                                    </div>
 
                                 </>
                             ) : (
