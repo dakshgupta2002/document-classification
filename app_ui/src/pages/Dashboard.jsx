@@ -63,7 +63,7 @@ export default function Dashboard() {
                                     {doc.caption}
                                 </div>
                                 {!doc?.discarded ?
-                                    <p className="absolute top-0 left-8 bg-green-100  rounded-r-lg px-4 py-1 text-sm font-semibold">{doc.class}</p>
+                                    <p className={`absolute top-0 left-8 ${!(doc.class == "unknown") ? "bg-green-100" : "bg-red-100"}  rounded-r-lg px-4 py-1 text-sm font-semibold`}>{doc.class}</p>
                                     :
                                     <p className="absolute text-2xl bg-gray-400 opacity-75 px-4 rounded-md text-red-600 font-bold -rotate-45 top-10">Discarded</p>
                                 }

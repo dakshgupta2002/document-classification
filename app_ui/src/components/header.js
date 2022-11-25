@@ -18,7 +18,7 @@ export default function Header() {
                     <div className="text-gray-700 text-center flex items-center cursor-pointer">
                         <h1 className="flex justify-center w-full">
                             <Link to={`/`} aria-label="Fast logo">
-                                <img fetchpriority="high" src="/images/logo.png" alt="Fast Vibe" className="mt-2 w-1/2 mobiles:mx-2 mobiles:w-7/12" />
+                                <img fetchpriority="high" src="/images/logo.png" alt="Fast Vibe" className="mt-2 w-1/2 pb-2 mobiles:mx-2 mobiles:w-7/12" />
                             </Link>
                         </h1>
                     </div>
@@ -77,8 +77,21 @@ export default function Header() {
                         }
                     </div>
                 </div>
+                <div className="fixed bottom-12 right-24 flex items-center space-x-4 cursor-pointer" onClick={() => setCreateP((createP) => !createP)}>
+                    <button
+                        type="button"
+                        title="Create Post"
+                        className="bg-blue-500 border border-gray-800 rounded-full z-[100] px-4 py-4 text-center"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className=" w-6 text-white cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                        </svg>
+                    </button>
+                    <p className="text-lg font-medium text-gray-600">Add Document!</p>
+                </div>
             </div>
             {createP && <CreatePost createP={createP} setCreateP={setCreateP} userId={user.uid} />}
+
         </header>
     )
 }

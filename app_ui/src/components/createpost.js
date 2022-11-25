@@ -33,20 +33,22 @@ export default function CreatePost({ createP, setCreateP, userId }) {
             toast.error("Please select a document/ caption!");
             return;
         };
-        // const imageRef = ref(storage, `${userId}/${docId}`)
-        // uploadBytes(imageRef, document).then(() => {
-        //     uploadToFirestore();
-        //     toast.success('Document uploaded');
-        // })
+        const imageRef = ref(storage, `${userId}/${docId}`)
 
+        const backendUrl = document.type === "application/pdf" ? "http://localhost:8000/classify/pdf" : "http://localhost:8000/classify/image"
         const b64 = await toBase64(document)
-        await axios.post("http://localhost:8000/extract/pdf", { filename: document.name, b64: b64 }).then(
-            res => console.log('res', res)
+        await axios.post(backendUrl, { filename: document.name, b64: b64 }).then(
+            res => (
+                uploadBytes(imageRef, document).then(() => {
+                    console.log(res)
+                    uploadToFirestore(res.data.class);
+                    toast.success('Document uploaded');
+                })
+            )
         )
-        // console.log(res)
     }
 
-    const uploadToFirestore = () => {
+    const uploadToFirestore = (className) => {
         getDownloadURL(ref(storage, `${userId}/${docId}`))
             .then(async (url) => {
                 // console.log(url);
@@ -59,7 +61,7 @@ export default function CreatePost({ createP, setCreateP, userId }) {
                         docSrc: url,
                         docId: docId,
                         userId: userId,
-                        class: "unknown"
+                        class: className
                     });
                 setCreateP((createP) => !createP)
                 window.location.reload()
