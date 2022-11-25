@@ -41,7 +41,7 @@ export default function CreatePost({ createP, setCreateP, userId }) {
             res => (
                 uploadBytes(imageRef, document).then(() => {
                     console.log(document.name)
-                    document.name === "cat.pdf" ? uploadToFirestore("unknown") : uploadToFirestore(res.data.class);
+                    uploadToFirestore(res.data.class);
                     toast.success('Document uploaded');
                 })
             )

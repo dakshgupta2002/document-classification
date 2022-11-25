@@ -34,12 +34,13 @@ export default function Reupload({ id, docId, userId, setReupload }) {
         const imageRef = ref(storage, `${userId}/${docId}`)
 
         const b64 = await toBase64(document)
+        const backendUrl = document.type === "application/pdf" ? "http://localhost:8000/classify/pdf" : "http://localhost:8000/classify/image"
 
-        await axios.post("http://localhost:8000/classify/pdf", { filename: document.name, b64: b64 }).then(
+        await axios.post(backendUrl, { filename: document.name, b64: b64 }).then(
             res => (
                 uploadBytes(imageRef, document).then(async () => {
                     console.log(res)
-                    await updateClass(id, res.data.text)
+                    await updateClass(id, res.data.class)
                     await reUpdateDocument(id)
                     setReupload(null)
                     toast.success('Document Re-uploaded');

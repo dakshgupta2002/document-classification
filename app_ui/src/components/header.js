@@ -77,7 +77,7 @@ export default function Header() {
                         }
                     </div>
                 </div>
-                <div className="fixed bottom-12 right-24 flex items-center space-x-4 cursor-pointer" onClick={() => setCreateP((createP) => !createP)}>
+                <div className="z-[500] fixed bottom-12 right-24 flex items-center space-x-4 cursor-pointer" onClick={() => setCreateP((createP) => !createP)}>
                     <button
                         type="button"
                         title="Create Post"
@@ -87,7 +87,7 @@ export default function Header() {
                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                         </svg>
                     </button>
-                    <p className="text-lg font-medium text-gray-600">Add Document!</p>
+                    <p className="z-[5000] text-lg font-medium text-gray-600">Add Document!</p>
                 </div>
             </div>
             {createP && <CreatePost createP={createP} setCreateP={setCreateP} userId={user.uid} />}
