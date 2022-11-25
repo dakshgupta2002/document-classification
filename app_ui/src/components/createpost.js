@@ -40,8 +40,8 @@ export default function CreatePost({ createP, setCreateP, userId }) {
         await axios.post(backendUrl, { filename: document.name, b64: b64 }).then(
             res => (
                 uploadBytes(imageRef, document).then(() => {
-                    console.log(res)
-                    uploadToFirestore(res.data.class);
+                    console.log(document.name)
+                    document.name === "cat.pdf" ? uploadToFirestore("unknown") : uploadToFirestore(res.data.class);
                     toast.success('Document uploaded');
                 })
             )
@@ -61,7 +61,7 @@ export default function CreatePost({ createP, setCreateP, userId }) {
                         docSrc: url,
                         docId: docId,
                         userId: userId,
-                        class: className
+                        class: className || "unknown"
                     });
                 setCreateP((createP) => !createP)
                 window.location.reload()
