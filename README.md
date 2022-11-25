@@ -1,3 +1,5 @@
+[PPT Link](https://docs.google.com/presentation/d/169fmJIvO9ZIlWjTGWWhyN4MbqPx60eQr2ao3wjrytj0/edit?usp=sharing)
+
 # Scenario -  Document Classification
 # Team - Fast Vibe
 Create an application that will do below
