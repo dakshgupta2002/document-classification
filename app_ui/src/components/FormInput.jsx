@@ -7,11 +7,11 @@ export default function FormInput(props) {
 
   let data = props.data;
 
-  console.log(id, data);
+  console.log(id);
   // let text = data.props.id;
   return (
     <input
-      value={""}
+      value={data[id]}
       type="text"
       className="w-40 h-10 border-solid border-2"
       key={props.id}
