@@ -107,7 +107,7 @@ export const Demo = () => {
             return (
               <div className="flex flex-row">
                 {cols.map((col, colIndex) => {
-                  return <FormInput id={`${rowIndex}-${colIndex}`} data={data} setActiveCellId={setActiveCellId} />
+                  return <FormInput id={`${rowIndex}-${colIndex}`} rowIndex={rowIndex} colIndex={colIndex} data={data} setActiveCellId={setActiveCellId} />
                 })}
               </div>
             );
