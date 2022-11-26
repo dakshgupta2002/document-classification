@@ -16,6 +16,10 @@ export const Demo = () => {
   const [rows, setRows] = useState([0, 0, 0]);
   const [cols, setCols] = useState([0]);
   const [data, setData] = useState({});
+  const [top, setTop] = useState(100);
+  const [left, setLeft] = useState(100);
+  const [height, setHeight] = useState(100);
+  const [width, setWidth] = useState(100);
 
   const [activeCellId, setActiveCellId] = useState(null);
 
@@ -47,7 +51,13 @@ export const Demo = () => {
         })
         .then((res) => {
           if (activeCellId !== null) {
-            setData({...data, [activeCellId]: res?.data?.text})
+            setData({...data, [activeCellId]: {
+              text: res?.data?.text,
+              top: "",
+              left: "",
+              height: "",
+              width: ""
+            }})
           }
         });
     }
@@ -57,6 +67,7 @@ export const Demo = () => {
     <div>
       <div style={{ width: "100%" }}>
         <input type="file" onChange={onChange} />
+        <div id="highlight" className="relative bg-yellow-100" style={{top: top, left: left, height: height, width: width }}></div>
         <button>Use default img</button>
         <br />
         <br />
@@ -107,7 +118,7 @@ export const Demo = () => {
             return (
               <div className="flex flex-row">
                 {cols.map((col, colIndex) => {
-                  return <FormInput id={`${rowIndex}-${colIndex}`} rowIndex={rowIndex} colIndex={colIndex} data={data} setActiveCellId={setActiveCellId} />
+                  return <FormInput id={`${rowIndex}-${colIndex}`} rowIndex={rowIndex} colIndex={colIndex} data={data} setActiveCellId={setActiveCellId} setTop={setTop} setLeft={setLeft} setHeight={setHeight} setWidth={setWidth} />
                 })}
               </div>
             );

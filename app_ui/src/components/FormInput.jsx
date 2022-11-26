@@ -7,11 +7,9 @@ export default function FormInput(props) {
 
   let data = props.data;
 
-  console.log(id);
-  // let text = data.props.id;
   return (
     <input
-      value={data[id]}
+      value={data[id]?.text}
       type="text"
       className="w-40 h-10 border-solid border-2"
       key={props.id}
@@ -22,6 +20,10 @@ export default function FormInput(props) {
       id={props.id}
       onContextMenu={(e) => {
         e.preventDefault();
+        props.setTop(data[id]?.top);
+        props.setLeft(data[id]?.left);
+        props.setHeight(data[id]?.height);
+        props.setWidth(data[id]?.width);
         console.log(`Previewing ${props.id}`);
       }}
     />
