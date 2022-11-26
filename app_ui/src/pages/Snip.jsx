@@ -13,6 +13,10 @@ export const Demo = () => {
   const [cropData, setCropData] = useState("#");
   const [cropper, setCropper] = useState();
   const imageRef = useRef(null);
+  const [rows, setRows] = useState([0, 0, 0]);
+  const [cols, setCols] = useState([0]);
+  const [activeCellId, setActiveCellId] = useState(null);
+
   const onChange = (e) => {
     e.preventDefault();
     let files;
@@ -28,21 +32,36 @@ export const Demo = () => {
     reader.readAsDataURL(files[0]);
   };
 
+  const FormInput = (props) => {
+    return (
+      <input
+        type="text"
+        className="w-40 h-10 border-solid border-2"
+        key={props.id}
+        onClick={ () => setActiveCellId(props.id)}
+        onContextMenu={(e) => {
+          e.preventDefault();
+          console.log(`Previewing ${props.id}`);
+        }}
+      />
+    );
+  };
+
   const getCropData = async () => {
     if (typeof cropper !== "undefined") {
       // console.log(cropper.getCroppedCanvas().toDataURL())
-      const backendUrl = "http://localhost:8000/extract/image"
+      const backendUrl = "http://localhost:8000/extract/image";
       setCropData(cropper.getCroppedCanvas().toDataURL());
-      await axios.post(backendUrl, { filename: "image", b64: cropper.getCroppedCanvas().toDataURL().split(',').pop() }).then(
-        res => (
-          // uploadBytes(imageRef, document).then(() => {
-          //   console.log(document.name)
-          //   // uploadToFirestore(res.data.class);
-          //   toast.success('Document uploaded');
-          // })
-          setText(res?.data?.text)
-          )
-      )
+      await axios
+        .post(backendUrl, {
+          filename: "image",
+          b64: cropper.getCroppedCanvas().toDataURL().split(",").pop(),
+        })
+        .then((res) => {
+          if (activeCellId !== null){
+            document.getElementById(activeCellId).innerHTML = res?.data?.text;
+          }
+        });
     }
   };
 
@@ -71,26 +90,52 @@ export const Demo = () => {
           }}
         />
       </div>
-      <div>
-        <div className="box" style={{ width: "50%", float: "right" }}>
-          {/* <h1>Preview</h1> */}
-          <div
-            className="img-preview"
-            style={{ width: "0%", float: "left", height: "0px" }}
-          />
+
+      <div className="px-24 grid grid-cols-2 gap-x-4">
+        <div className="flex flex-col items-center">
+          <div className="box" style={{ width: "50%", float: "right" }}>
+            <div
+              className="img-preview"
+              style={{ width: "0%", float: "left", height: "0px" }}
+            />
+          </div>
+          <button
+            className="w-full py-3 mt-1 bg-blue-500 hover:bg-indigo-500 relative text-white"
+            onClick={getCropData}
+          >
+            Crop Image
+          </button>
+          
+          <img style={{ width: "100%" }} src={cropData} alt="cropped" />
         </div>
+
         <div
-          className="box"
-          style={{ width: "0%", float: "right", height: "0px" }}
+          className="px-4 overflow-scroll h-[80vh] border-2 py-4 bg-off-white rounded-lg shadow-xl"
+          style={{
+            scrollbarWidth: "0",
+          }}
         >
-          <h1>
-            {/* <span>Crop</span> */}
-            <button style={{ float: "right" }} onClick={getCropData}>
-              Crop Image
-            </button>
-            {text}
-          </h1>
-          <img style={{ width: "0%" }} src={cropData} alt="cropped" />
+          {rows.map((row, rowIndex) => {
+            return (
+              <div className="flex flex-row">
+                {cols.map((col, colIndex) => {
+                  return <FormInput id={`${rowIndex}-${colIndex}`} />;
+                })}
+              </div>
+            );
+          })}
+          <button
+            className="w-full py-3 mt-1 bg-blue-500 hover:bg-indigo-500 relative text-white"
+            onClick={() => setRows([...rows, 0])}
+          >
+            Add Row
+          </button>
+          <button
+            className="w-full py-3 mt-1 bg-blue-500 hover:bg-indigo-500 relative text-white"
+            onClick={() => setCols([...cols, 0])}
+          >
+            Add Col
+          </button>
         </div>
       </div>
       <br style={{ clear: "both" }} />
