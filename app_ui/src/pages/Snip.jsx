@@ -15,6 +15,8 @@ export const Demo = () => {
   const imageRef = useRef(null);
   const [rows, setRows] = useState([0, 0, 0]);
   const [cols, setCols] = useState([0]);
+  const [data, setData] = useState({});
+
   const [activeCellId, setActiveCellId] = useState(null);
 
   const onChange = (e) => {
@@ -45,7 +47,7 @@ export const Demo = () => {
         })
         .then((res) => {
           if (activeCellId !== null) {
-            document.getElementById(activeCellId).value = res?.data?.text;
+            setData(...data, {activeCellId: res?.data?.text})
           }
         });
     }
@@ -105,7 +107,7 @@ export const Demo = () => {
             return (
               <div className="flex flex-row">
                 {cols.map((col, colIndex) => {
-                  return <FormInput id={`${rowIndex}-${colIndex}`} setActiveCellId={setActiveCellId} />
+                  return <FormInput id={`${rowIndex}-${colIndex}`} data={data} setActiveCellId={setActiveCellId} />
                 })}
               </div>
             );
