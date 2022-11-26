@@ -55,14 +55,14 @@ def classify_image(b64, filename):
     text = extract_from_image(b64, filename)
     res = pickled_model.predict([text])
     conf = max(pickled_model.decision_function([text])[0])
-    if(conf <= 0):
-        return 'Unknown'
-    return res[0]
+    # if(conf <= 0):
+    #     return 'Unknown'
+    return (res[0], conf)
     
 def classify_pdf(b64, filename):
     text = extract_from_pdf(b64, filename)
     res = pickled_model.predict([text])
     conf = max(pickled_model.decision_function([text])[0])
-    if(conf <= 0):
-        return 'Unknown'
-    return res[0]   
+    # if(conf <= 0):
+    #     return 'Unknown'
+    return (res[0], conf)  
