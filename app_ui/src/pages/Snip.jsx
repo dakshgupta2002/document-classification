@@ -2,12 +2,14 @@ import React, { useState, useRef } from "react";
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import "./Demo.css";
+import axios from "axios";
 
 const defaultSrc =
   "https://raw.githubusercontent.com/roadmanfong/react-cropper/master/example/img/child.jpg";
 
-export const Demo= () => {
+export const Demo = () => {
   const [image, setImage] = useState(defaultSrc);
+  const [text, setText] = useState("");
   const [cropData, setCropData] = useState("#");
   const [cropper, setCropper] = useState();
   const imageRef = useRef(null);
@@ -26,10 +28,21 @@ export const Demo= () => {
     reader.readAsDataURL(files[0]);
   };
 
-  const getCropData = () => {
+  const getCropData = async () => {
     if (typeof cropper !== "undefined") {
-        console.log(cropper.getCroppedCanvas().toDataURL())
+      // console.log(cropper.getCroppedCanvas().toDataURL())
+      const backendUrl = "http://localhost:8000/extract/image"
       setCropData(cropper.getCroppedCanvas().toDataURL());
+      await axios.post(backendUrl, { filename: "image", b64: cropper.getCroppedCanvas().toDataURL().split(',').pop() }).then(
+        res => (
+          // uploadBytes(imageRef, document).then(() => {
+          //   console.log(document.name)
+          //   // uploadToFirestore(res.data.class);
+          //   toast.success('Document uploaded');
+          // })
+          setText(res?.data?.text)
+          )
+      )
     }
   };
 
@@ -60,23 +73,24 @@ export const Demo= () => {
       </div>
       <div>
         <div className="box" style={{ width: "50%", float: "right" }}>
-          <h1>Preview</h1>
+          {/* <h1>Preview</h1> */}
           <div
             className="img-preview"
-            style={{ width: "100%", float: "left", height: "300px" }}
+            style={{ width: "0%", float: "left", height: "0px" }}
           />
         </div>
         <div
           className="box"
-          style={{ width: "50%", float: "right", height: "300px" }}
+          style={{ width: "0%", float: "right", height: "0px" }}
         >
           <h1>
-            <span>Crop</span>
+            {/* <span>Crop</span> */}
             <button style={{ float: "right" }} onClick={getCropData}>
               Crop Image
             </button>
+            {text}
           </h1>
-          <img style={{ width: "100%" }} src={cropData} alt="cropped" />
+          <img style={{ width: "0%" }} src={cropData} alt="cropped" />
         </div>
       </div>
       <br style={{ clear: "both" }} />
