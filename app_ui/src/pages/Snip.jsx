@@ -3,7 +3,7 @@ import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import "./Demo.css";
 import axios from "axios";
-
+import FormInput from "../components/FormInput";
 const defaultSrc =
   "https://raw.githubusercontent.com/roadmanfong/react-cropper/master/example/img/child.jpg";
 
@@ -32,20 +32,6 @@ export const Demo = () => {
     reader.readAsDataURL(files[0]);
   };
 
-  const FormInput = (props) => {
-    return (
-      <input
-        type="text"
-        className="w-40 h-10 border-solid border-2"
-        key={props.id}
-        onClick={ () => setActiveCellId(props.id)}
-        onContextMenu={(e) => {
-          e.preventDefault();
-          console.log(`Previewing ${props.id}`);
-        }}
-      />
-    );
-  };
 
   const getCropData = async () => {
     if (typeof cropper !== "undefined") {
@@ -58,8 +44,8 @@ export const Demo = () => {
           b64: cropper.getCroppedCanvas().toDataURL().split(",").pop(),
         })
         .then((res) => {
-          if (activeCellId !== null){
-            document.getElementById(activeCellId).innerHTML = res?.data?.text;
+          if (activeCellId !== null) {
+            document.getElementById(activeCellId).value = res?.data?.text;
           }
         });
     }
@@ -105,7 +91,7 @@ export const Demo = () => {
           >
             Crop Image
           </button>
-          
+
           <img style={{ width: "100%" }} src={cropData} alt="cropped" />
         </div>
 
@@ -119,7 +105,7 @@ export const Demo = () => {
             return (
               <div className="flex flex-row">
                 {cols.map((col, colIndex) => {
-                  return <FormInput id={`${rowIndex}-${colIndex}`} />;
+                  return <FormInput id={`${rowIndex}-${colIndex}`} setActiveCellId={setActiveCellId} />
                 })}
               </div>
             );
