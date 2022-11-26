@@ -47,7 +47,7 @@ export const Demo = () => {
         })
         .then((res) => {
           if (activeCellId !== null) {
-            setData(...data, {activeCellId: res?.data?.text})
+            setData({...data, activeCellId: res?.data?.text})
           }
         });
     }

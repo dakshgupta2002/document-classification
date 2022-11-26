@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 
 export default function FormInput(props) {
-  let id = props.id;
+  let data = props.data;
+  let text = data.props.id;
   return (
     <input
-      value={props.data.id}
+      value={text}
       type="text"
       className="w-40 h-10 border-solid border-2"
       key={props.id}
