@@ -11,6 +11,7 @@ import SignUp from './pages/Signup';
 import Dashboard from './pages/Dashboard';
 import Preview from './pages/Preview';
 import Header from './components/header';
+import Demo from './pages/Snip';
 
 function App() {
 
@@ -27,6 +28,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/docs/:docId" element={<Preview />} />
+          <Route path="/snip" element={ <Demo/>} />
         </Routes>
       </Router>
     </UserContext.Provider>
