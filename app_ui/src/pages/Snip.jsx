@@ -4,6 +4,7 @@ import "cropperjs/dist/cropper.css";
 import "./Demo.css";
 import axios from "axios";
 import FormInput from "../components/FormInput";
+import { useEffect } from "react";
 const defaultSrc =
   "https://raw.githubusercontent.com/roadmanfong/react-cropper/master/example/img/child.jpg";
 
@@ -20,6 +21,10 @@ export const Demo = () => {
   const [left, setLeft] = useState(100);
   const [height, setHeight] = useState(100);
   const [width, setWidth] = useState(100);
+
+  useEffect( () => {
+    console.log(cropper?.getCropBoxData({}));
+  })
 
   const [activeCellId, setActiveCellId] = useState(null);
 
@@ -50,13 +55,14 @@ export const Demo = () => {
           b64: cropper.getCroppedCanvas().toDataURL().split(",").pop(),
         })
         .then((res) => {
+          const cropBoxData = cropper.getCropBoxData();
           if (activeCellId !== null) {
             setData({...data, [activeCellId]: {
               text: res?.data?.text,
-              top: "",
-              left: "",
-              height: "",
-              width: ""
+              top: cropBoxData.top,
+              left: cropBoxData.left,
+              height: cropBoxData.height,
+              width: cropBoxData.width
             }})
           }
         });
