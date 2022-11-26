@@ -1,6 +1,10 @@
+[PPT Link](https://docs.google.com/presentation/d/169fmJIvO9ZIlWjTGWWhyN4MbqPx60eQr2ao3wjrytj0/edit?usp=sharing)
+[Walkthrough](https://drive.google.com/file/d/1axhxGhHKPSGL-AfMvTNIFOvW3tDqClOK/view?usp=share_link)
+
 # Scenario -  Document Classification
 # Team - Fast Vibe
 Create an application that will do below
+
 
 
 ## Administrator UI
