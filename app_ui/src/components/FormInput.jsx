@@ -20,11 +20,13 @@ export default function FormInput(props) {
       id={props.id}
       onContextMenu={(e) => {
         e.preventDefault();
+        console.log(data[id])
         props.setTop(data[id]?.top);
         props.setLeft(data[id]?.left);
         props.setHeight(data[id]?.height);
         props.setWidth(data[id]?.width);
-        console.log(`Previewing ${props.id}`);
+        document.getElementsByClassName('cropper-canvas')[0].setAttribute("style", `width: ${data[id]?.imageData.width}; height: ${data[id]?.imageData.height}; transform: ${data[id]?.imageData.transform};`)
+        // document.getElementsByClassName('cropper-crop-box')[0].setAttribute("style", `width: ${data[id]?.cropperCropData?.width}; height: ${data[id]?.cropperCropData?.height}; transform: ${data[id]?.cropperCropData1?.transform};`)
       }}
     />
   );

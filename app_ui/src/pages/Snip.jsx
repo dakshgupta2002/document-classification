@@ -21,11 +21,6 @@ export const Demo = () => {
   const [left, setLeft] = useState(100);
   const [height, setHeight] = useState(100);
   const [width, setWidth] = useState(100);
-
-  useEffect( () => {
-    console.log(cropper?.getCropBoxData({}));
-  })
-
   const [activeCellId, setActiveCellId] = useState(null);
 
   const onChange = (e) => {
@@ -45,6 +40,16 @@ export const Demo = () => {
 
 
   const getCropData = async () => {
+    let imgData = document.getElementsByClassName('cropper-canvas')[0].getAttribute("style").split(";");
+    let cropBoxData = document.getElementsByClassName('cropper-crop-box')[0]?.getAttribute("style")?.split(";");
+    // console.log(imgData, imgData[0].split(":"), imgData[1].split(":"), imgData[2].split(":"))
+    // console.log({cropperCropData: {
+    //   [cropBoxData[0]?.split(":")[0].trim()]: cropBoxData[0]?.split(":")[1].trim(),
+    //   [cropBoxData[1]?.split(":")[0].trim()]: cropBoxData[1]?.split(":")[1].trim(),
+    //   [cropBoxData[2]?.split(":")[0].trim()]: cropBoxData[2]?.split(":")[1].trim()
+    // }
+  // })
+  console.log(cropBoxData[0]?.split(":")[1].trim())
     if (typeof cropper !== "undefined") {
       // console.log(cropper.getCroppedCanvas().toDataURL())
       const backendUrl = "http://localhost:8000/extract/image";
@@ -62,7 +67,17 @@ export const Demo = () => {
               top: cropBoxData.top,
               left: cropBoxData.left,
               height: cropBoxData.height,
-              width: cropBoxData.width
+              width: cropBoxData.width,
+              imageData: {
+                [imgData[0]?.split(":")[0].trim()]: imgData[0].split(":")[1].trim(),
+                [imgData[1]?.split(":")[0].trim()]: imgData[1].split(":")[1].trim(),
+                [imgData[2]?.split(":")[0].trim()]: imgData[2].split(":")[1].trim()
+              },
+              cropperCropData: {
+                [cropBoxData[0]?.split(":")[0].trim()]: cropBoxData[0]?.split(":")[1].trim(),
+                [cropBoxData[1]?.split(":")[0].trim()]: cropBoxData[1]?.split(":")[1].trim(),
+                [cropBoxData[2]?.split(":")[0].trim()]: cropBoxData[2]?.split(":")[1].trim()
+              }
             }})
           }
         });
@@ -73,7 +88,7 @@ export const Demo = () => {
     <div>
       <div style={{ width: "100%" }}>
         <input type="file" onChange={onChange} />
-        <div id="highlight" className="relative bg-yellow-100" style={{top: top, left: left, height: height, width: width }}></div>
+        <div id="highlight" className="relative bg-yellow-100 z-100" style={{top: top, left: left, height: height, width: width }}></div>
         <button>Use default img</button>
         <br />
         <br />
